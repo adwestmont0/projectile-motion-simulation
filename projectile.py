@@ -74,7 +74,6 @@ class ProjectileExperimentWithAngles(ProjectileExperiment):
         self.angles = [15, 30, 45, 60, 75] if angles is None else angles
         self.initial_velocity = 20
         self.drag_coefficient = drag_coefficient
-        self.tabulated_data = {}
         
     def simulate(self):
         max_x = 0
