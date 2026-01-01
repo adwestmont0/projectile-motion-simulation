@@ -9,15 +9,15 @@ It uses Euler's method to update the position and velocity of the projectile at 
 The x and y coordinates of the projectile's trajectory at each time step are stored in lists for further analysis or plotting.
 """
 class ProjectileWithAirResistance:
-    def __init__(self, initial_velocity, angle_of_projection_in_degrees, drag_coefficient = 0.2, time_steps = 0.01):
+    def __init__(self, initial_velocity, angle_of_projection_in_degrees, drag_coefficient = 0.2, dt = 0.01, gravitational_constant = 9.8, mass = 10.0):
         self.initial_velocity = initial_velocity
         self.angle_of_projection_in_radians = angle_of_projection_in_degrees * math.pi / 180
         self.drag_coefficient = drag_coefficient
-        self.time_steps = time_steps
+        self.dt = dt
         self.x_coordinates = []
         self.y_coordinates = []
-        self.g = 9.8
-        self.mass_of_projectile = 10.0
+        self.g = gravitational_constant
+        self.mass = mass
 
     def simulate(self):
         x = 0.0
@@ -27,14 +27,14 @@ class ProjectileWithAirResistance:
         vx = self.initial_velocity * math.cos(self.angle_of_projection_in_radians)
         vy = self.initial_velocity * math.sin(self.angle_of_projection_in_radians)
         while y >= 0:
-            x = x + vx * self.time_steps
-            y = y + vy * self.time_steps
-            
+            x = x + vx * self.dt
+            y = y + vy * self.dt
+
             self.x_coordinates.append(x)
             self.y_coordinates.append(y)
-            vx = vx - self.time_steps * ((self.drag_coefficient * vx) / self.mass_of_projectile)
-            vy = vy - self.time_steps * ((self.drag_coefficient * vy ) / self.mass_of_projectile + self.g)
-        
+            vx = vx - self.dt * ((self.drag_coefficient * vx) / self.mass)
+            vy = vy - self.dt * ((self.drag_coefficient * vy ) / self.mass + self.g)
+
 '''
 ProjectileExperiment is a base class for conducting projectile motion experiments.
 It provides methods to plot the results and a placeholder for simulation that must be implemented by subclasses.
@@ -52,10 +52,6 @@ class ProjectileExperiment:
         for i in range(len(self.all_x_coordinates)):
             plt.plot(self.all_x_coordinates[i], self.all_y_coordinates[i], linestyle = '-')
             plt.legend(self.legend)
-        plt.title("Projectile Motion Trajectory")
-        plt.xlabel("Horizontal Distance (meters)")
-        plt.ylabel("Vertical Distance (meters)")
-        
         plt.title("Projectile Motion Trajectory")
         plt.xlabel("Horizontal Distance (meters)")
         plt.ylabel("Vertical Distance (meters)")
